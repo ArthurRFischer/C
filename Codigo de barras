@@ -1,0 +1,33 @@
+#include <iostream>
+
+using namespace std;
+
+// Função para calcular o dígito verificador (Check Digit) do EAN-13
+int calcularCheckDigit(long long int ean12) {
+    int soma = 0;
+    for (int i = 0; i < 12; ++i) {
+        int digito = ean12 % 10;
+        ean12 /= 10;
+        soma += (i % 2 == 0) ? digito : digito * 3; // Alterna entre 1 e 3
+    }
+    return (10 - (soma % 10)) % 10; // Cálculo do dígito verificador
+}
+
+int main() {
+    long long int ean12 = 899562479582;
+    int checkDigit = calcularCheckDigit(ean12); // Cálculo do dígito verificador
+    long long int ean13 = ean12 * 10 + checkDigit; // EAN-13 completo
+
+    // Exibir EAN-13 e simulação do código de barras
+    cout << "EAN-13 completo: " << ean13 << endl;
+    cout << "Código de barras: | ";
+    for (int i = 0; i < 13; ++i) {
+        int digito = ean13 % 10;
+        ean13 /= 10;
+        for (int j = 0; j < digito; ++j) cout << "#"; // Representação visual
+        cout << " | ";
+    }
+    cout << endl;
+
+    return 0;
+}
